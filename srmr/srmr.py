@@ -1,3 +1,4 @@
+from __future__ import division
 import numpy as np
 import scipy.signal as sig
 from srmr.modulation_filters import *
@@ -14,7 +15,7 @@ def calc_erbs(low_freq, fs, n_filters):
     return erbs
 
 def calc_cutoffs(cfs, fs, q):
-    #calc_cutoffs Calculates cutoff frequencies (3 dB) for 2nd order bandpass
+    # Calculates cutoff frequencies (3 dB) for 2nd order bandpass
     w0 = 2*np.pi*cfs/fs
     B0 = np.tan(w0/2)/q
     L = cfs - (B0 * fs / (2*np.pi))
@@ -34,14 +35,14 @@ def srmr(x, fs, n_cochlear_filters=23, low_freq=125, min_cf=4, max_cf=128):
     mod_filter_cfs = compute_modulation_cfs(min_cf, max_cf, 8)
     MF = modulation_filterbank(mod_filter_cfs, mfs, 2)
 
-    n_frames = 1+int(np.floor((gt_env.shape[1]-wLength)/wInc))
+    n_frames = np.ceil((gt_env.shape[1])/wInc)
     w = sig.hamming(wLength)
 
     energy = np.zeros((n_cochlear_filters, 8, n_frames))
     for i, ac_ch in enumerate(gt_env):
         mod_out = modfilt(MF, ac_ch)
         for j, mod_ch in enumerate(mod_out):
-            mod_out_frame = segment_axis(mod_ch, wLength, wInc, end='pad')
+            mod_out_frame = segment_axis(mod_ch, wLength, overlap=wLength-wInc, end='delay')
             energy[i,j,:] = np.sum((w*mod_out_frame)**2)
     
     erbs = np.flipud(calc_erbs(low_freq, fs, n_cochlear_filters))

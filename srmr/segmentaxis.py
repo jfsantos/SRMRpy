@@ -65,11 +65,28 @@ def segment_axis(a, length, overlap=0, axis=None, end='cut', endvalue=0):
             s = list(a.shape)
             s[-1] = roundup
             b = np.empty(s,dtype=a.dtype)
-            b[..., :l] = a
+            if end in ['pad','wrap']:
+                b[..., :l] = a
             if end == 'pad':
                 b[..., l:] = endvalue
             elif end == 'wrap':
                 b[..., l:] = a[..., :roundup-l]
+            a = b
+        elif end == 'delay':
+            s = list(a.shape)
+            l_orig = l
+            l += overlap
+            # if l not divisible by length, pad last frame with zeros
+            if l_orig % (length-overlap):
+                roundup = length + (1+(l-length)//(length-overlap))*(length-overlap)
+            else:
+                roundup = l
+            s[-1] = roundup
+            b = np.empty(s,dtype=a.dtype)
+
+            b[..., :(overlap)] = endvalue
+            b[..., (overlap):(l_orig+overlap)] = a
+            b[..., (l_orig+overlap):] = endvalue
             a = b
 
         a = a.swapaxes(-1,axis)

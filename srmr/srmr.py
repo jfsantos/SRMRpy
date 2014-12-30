@@ -22,7 +22,7 @@ def calc_cutoffs(cfs, fs, q):
     R = cfs + (B0 * fs / (2*np.pi))
     return L, R
 
-def srmr(x, fs, n_cochlear_filters=23, low_freq=125, min_cf=4, max_cf=128, fast=True):
+def srmr(x, fs, n_cochlear_filters=23, low_freq=125, min_cf=4, max_cf=128, fast=True, norm=False):
     wLengthS = .256
     wIncS = .064
     # Computing gammatone envelopes
@@ -50,7 +50,13 @@ def srmr(x, fs, n_cochlear_filters=23, low_freq=125, min_cf=4, max_cf=128, fast=
         mod_out = modfilt(MF, ac_ch)
         for j, mod_ch in enumerate(mod_out):
             mod_out_frame = segment_axis(mod_ch, wLength, overlap=wLength-wInc, end='delay')
-            energy[i,j,:] = np.sum((w*mod_out_frame)**2)
+            energy[i,j,:] = np.sum((w*mod_out_frame)**2, axis=1)
+
+    if norm:
+        peak_energy = np.max(np.mean(energy, axis=0))
+        min_energy = peak_energy*0.001
+        energy[energy < min_energy] = min_energy
+        energy[energy > peak_energy] = peak_energy
     
     erbs = np.flipud(calc_erbs(low_freq, fs, n_cochlear_filters))
 

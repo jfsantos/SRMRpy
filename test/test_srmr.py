@@ -1,4 +1,4 @@
-from srmr.srmr import srmr
+from srmrpy import srmr
 from scipy.io.matlab import loadmat
 import numpy as np
 import matplotlib.pyplot as plt

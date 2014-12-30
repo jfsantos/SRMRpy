@@ -2,7 +2,7 @@
 
 This code has been implemented by Anne Archibald, and has been discussed on the
 ML."""
-
+from __future__  import division
 import numpy as np
 import warnings
 

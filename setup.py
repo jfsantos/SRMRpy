@@ -12,11 +12,14 @@ setup(
     install_requires = [
         'numpy',
         'scipy',
-        'nose',
-        'mock',
-        'matplotlib',
         'Gammatone',
     ],
+
+    tests_require = [
+      'nose'
+    ],
+
+    test_suite = 'nose.collector'
 
 #    entry_points = {
 #        'console_scripts': [

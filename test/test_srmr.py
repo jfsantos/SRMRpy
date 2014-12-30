@@ -1,7 +1,6 @@
 from srmrpy import srmr
 from scipy.io.matlab import loadmat
 import numpy as np
-import matplotlib.pyplot as plt
 
 def test_srmr():
     fs = 16000

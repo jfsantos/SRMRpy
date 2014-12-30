@@ -3,7 +3,7 @@ import numpy as np
 import scipy.signal as sig
 from srmr.modulation_filters import *
 from gammatone.fftweight import fft_gtgram
-from gammatone.filters import centre_freqs
+from gammatone.filters import centre_freqs, make_erb_filters, erb_filterbank
 from srmr.segmentaxis import segment_axis
 
 def calc_erbs(low_freq, fs, n_filters):
@@ -22,15 +22,22 @@ def calc_cutoffs(cfs, fs, q):
     R = cfs + (B0 * fs / (2*np.pi))
     return L, R
 
-def srmr(x, fs, n_cochlear_filters=23, low_freq=125, min_cf=4, max_cf=128):
+def srmr(x, fs, n_cochlear_filters=23, low_freq=125, min_cf=4, max_cf=128, fast=True):
     wLengthS = .256
     wIncS = .064
-    mfs = 400.0
+    # Computing gammatone envelopes
+    if fast:
+        mfs = 400.0
+        gt_env = fft_gtgram(x, fs, 0.010, 0.0025, n_cochlear_filters, low_freq)
+    else:
+        cfs = centre_freqs(fs, n_cochlear_filters, low_freq)
+        fcoefs = make_erb_filters(fs, cfs)
+        gt_env = np.abs(sig.hilbert(erb_filterbank(x, fcoefs)))
+        mfs = fs
+
     wLength = np.ceil(wLengthS*mfs)
     wInc = np.ceil(wIncS*mfs)
-    # Computing gammatone envelopes
-    gt_env = fft_gtgram(x, fs, 0.010, 0.0025, n_cochlear_filters, low_freq)
-    
+
     # Computing modulation filterbank with Q = 2 and 8 channels
     mod_filter_cfs = compute_modulation_cfs(min_cf, max_cf, 8)
     MF = modulation_filterbank(mod_filter_cfs, mfs, 2)

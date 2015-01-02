@@ -20,11 +20,12 @@ setup(
       'nose'
     ],
 
-    test_suite = 'nose.collector'
+    test_suite = 'nose.collector',
 
-#    entry_points = {
-#        'console_scripts': [
-#            'srmr = srmr.srmr:main',
-#        ]
-#    }
+    entry_points = {
+        'console_scripts': [
+            'srmr = srmrpy.srmr:main',
+        ]
+    }
 )
+

@@ -91,7 +91,34 @@ def srmr(x, fs, n_cochlear_filters=23, low_freq=125, min_cf=4, max_cf=128, fast=
 
     return np.sum(avg_energy[:, :4])/np.sum(avg_energy[:, 4:Kstar]), avg_energy
 
+def main():
+    import argparse
+    from scipy.io.wavfile import read as readwav
+    import numpy as np
+    parser = argparse.ArgumentParser(description='Compute the SRMR metric for a given WAV file')
+    parser.add_argument('-f', '--fast', dest='fast', action='store_true', default=False,
+        help='Use the faster version based on the gammatonegram')
+    parser.add_argument('-n', '--norm', dest='norm', action='store_true', default=False,
+        help='Use modulation spectrum energy normalization')
+    parser.add_argument('--ncochlearfilters', dest='n_cochlear_filters', type=int, default=23,
+        help='Number of filters in the acoustic filterbank')
+    parser.add_argument('--mincf', dest='min_cf', type=float, default=4.0,
+        help='Center frequency of the first modulation filter')
+    parser.add_argument('--maxcf', dest='max_cf', type=float, default=128.0,
+        help='Center frequency of the last modulation filter')
+    parser.add_argument('path', metavar='path', nargs='+', 
+            help='Path of the file or files to be processed. Can also be a folder.')
+    args = parser.parse_args()
+    for f in args.path:
+        fs, s = readwav(f)
+        if np.issubdtype(s.dtype, np.int):
+            s = s.astype('float')/np.iinfo(s.dtype).max
+        r, energy = srmr(s, fs, n_cochlear_filters=args.n_cochlear_filters,
+                min_cf=args.min_cf,
+                max_cf=args.max_cf,
+                fast=args.fast,
+                norm=args.norm)
+        print('%s, %f' % (f, r))
+
 if __name__ == '__main__':
-    x = np.random.rand(16000)
-    ratio = srmr(x, 16000)
-    print("Ratio = %2.2f" % ratio)
+    main()

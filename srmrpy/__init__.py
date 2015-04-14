@@ -4,4 +4,4 @@
 # This file is part of the SRMRpy library, and is licensed under the
 # MIT license: https://github.com/jfsantos/SRMRpy/blob/master/LICENSE
 
-from srmrpy.srmr import srmr
+from srmrpy.srmr import SRMR

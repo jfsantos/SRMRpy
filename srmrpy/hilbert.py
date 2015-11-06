@@ -48,6 +48,9 @@ def hilbert(x, N=None, axis=-1):
         raise ValueError("x must be real.")
     if N is None:
         N = x.shape[axis]
+        # Make N multiple of 16 to make sure the transform will be fast
+        if N % 16:
+            N = int(ceil(N/16)*16)
     if N <= 0:
         raise ValueError("N must be positive.")
 
@@ -64,6 +67,6 @@ def hilbert(x, N=None, axis=-1):
         ind = [newaxis] * x.ndim
         ind[axis] = slice(None)
         h = h[ind]
-    x = ifft(Xf * h, axis=axis)
-    return x
+    y = ifft(Xf * h, axis=axis)
+    return y[:x.shape[axis]]
 

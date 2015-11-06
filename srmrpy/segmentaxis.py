@@ -94,6 +94,8 @@ def segment_axis(a, length, overlap=0, axis=None, end='cut', endvalue=0):
             b[..., (overlap):(l_orig+overlap)] = a
             b[..., (l_orig+overlap):] = endvalue
             a = b
+        else:
+            raise ValueError("end has to be either 'cut', 'pad', 'wrap', or 'delay'.")
 
         a = a.swapaxes(-1,axis)
 

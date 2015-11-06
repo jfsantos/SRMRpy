@@ -19,10 +19,11 @@ def simple_energy_vad(x, fs, framelen=0.02, theta_main=30, theta_min=-55):
     return x_vad, speech_presence
 
 if __name__ == '__main__':
+    import sys
     from scipy.io.wavfile import read as readwav
     from matplotlib import pyplot as plt
 
-    fs, s = readwav('/Users/jfsantos/Downloads/OUT_2015_10_29/SCwoArtifacts/Lecture_Room_2_1_FCJF0_reverb-only.wav')
+    fs, s = readwav(sys.argv[1])
     s  = s.astype('float')/np.iinfo(s.dtype).max
     s_vad, speech_presence = simple_energy_vad(s, fs)
 

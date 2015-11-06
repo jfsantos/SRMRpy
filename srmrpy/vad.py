@@ -2,7 +2,12 @@ import numpy as np
 from srmrpy.segmentaxis import segment_axis
 
 def simple_energy_vad(x, fs, framelen=0.02, theta_main=30, theta_min=-55):
-    '''Simple energy voice activity detection algorithm based on energy thresholds as described in Kinnunen & Rajan '''
+    '''Simple energy voice activity detection algorithm based on energy
+    thresholds as described in Tomi Kinnunen and Padmanabhan Rajan, "A
+    practical, self-adaptive voice activity detector for speaker verification
+    with noisy telephone and microphone data", ICASSP 2013, Vancouver (NOTE:
+    this is the benchmark method, not the method proposed by the authors).
+    '''
     # Split signal in frames
     framelen = int(framelen * fs)
     frames = segment_axis(x, length=framelen, overlap=0, end='pad')

@@ -95,6 +95,8 @@ def srmr(x, fs, n_cochlear_filters=23, low_freq=125, min_cf=4, max_cf=128, fast=
 
 def process_file(f, args):
     fs, s = readwav(f)
+    if len(s.shape) > 1:
+        s = s[:,0]
     if np.issubdtype(s.dtype, np.int):
         s = s.astype('float')/np.iinfo(s.dtype).max
     r, energy = srmr(s, fs, n_cochlear_filters=args.n_cochlear_filters,

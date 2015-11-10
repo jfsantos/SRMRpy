@@ -15,13 +15,13 @@ def simple_energy_vad(x, fs, framelen=0.02, theta_main=30, theta_min=-55):
     frame_energy = 10*np.log10(1/(framelen-1) * (frames_zero_mean**2).sum(axis=1) + 1e-6)
     max_energy = max(frame_energy)
     speech_presence = (frame_energy > max_energy - theta_main) & (frame_energy > theta_min)
-    x_vad = np.zeros_like(x)
+    x_vad = np.zeros_like(x, dtype=bool)
     for idx, frame in enumerate(frames):
         if speech_presence[idx]:
-            x_vad[idx*framelen:(idx+1)*framelen] = s[idx*framelen:(idx+1)*framelen]
+            x_vad[idx*framelen:(idx+1)*framelen] = True
         else:
-            x_vad[idx*framelen:(idx+1)*framelen] = 0
-    return x_vad, speech_presence
+            x_vad[idx*framelen:(idx+1)*framelen] = False
+    return x[x_vad], x_vad
 
 if __name__ == '__main__':
     import sys

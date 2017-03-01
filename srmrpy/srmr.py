@@ -51,14 +51,14 @@ def srmr(x, fs, n_cochlear_filters=23, low_freq=125, min_cf=4, max_cf=128, fast=
         gt_env = np.abs(hilbert(erb_filterbank(x, fcoefs)))
         mfs = fs
 
-    wLength = np.ceil(wLengthS*mfs)
-    wInc = np.ceil(wIncS*mfs)
+    wLength = int(np.ceil(wLengthS*mfs))
+    wInc = int(np.ceil(wIncS*mfs))
 
     # Computing modulation filterbank with Q = 2 and 8 channels
     mod_filter_cfs = compute_modulation_cfs(min_cf, max_cf, 8)
     MF = modulation_filterbank(mod_filter_cfs, mfs, 2)
 
-    n_frames = 1 + (gt_env.shape[1] - wLength)//wInc
+    n_frames = int(1 + (gt_env.shape[1] - wLength)//wInc)
     w = hamming(wLength+1)[:-1] # window is periodic, not symmetric
 
     energy = np.zeros((n_cochlear_filters, 8, n_frames))

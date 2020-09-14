@@ -66,7 +66,7 @@ def hilbert(x, N=None, axis=-1):
     if len(x.shape) > 1:
         ind = [newaxis] * x.ndim
         ind[axis] = slice(None)
-        h = h[ind]
+        h = h[tuple(ind)]
     y = ifft(Xf * h, axis=axis)
     return y[:x.shape[axis]]
 

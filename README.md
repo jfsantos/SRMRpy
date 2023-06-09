@@ -1,5 +1,10 @@
 [![Code Health](https://landscape.io/github/jfsantos/SRMRpy/master/landscape.svg?style=flat)](https://landscape.io/github/jfsantos/SRMRpy/master)
 
+# Note
+Please don't use this version, as it's hosted for the testing purpose of `torchmetrics`.
+Instead, you can try [torchmetrics](https://github.com/Lightning-AI/torchmetrics) or [SRMRpy](https://github.com/jfsantos/SRMRpy).
+
+
 # SRMRpy: a Python implementation of the SRMR Toolbox
 
 The speech-to-reverberation modulation energy ratio (SRMR) is a non-intrusive

@@ -6,7 +6,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name = "SRMRpy",
+    name = "SRMRpy2",
     version = "1.0",
     packages = find_packages(),
 
@@ -24,7 +24,7 @@ setup(
 
     entry_points = {
         'console_scripts': [
-            'srmr = srmrpy.srmr:main',
+            'srmr = srmrpy2.srmr:main',
         ]
     }
 )

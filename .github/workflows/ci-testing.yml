@@ -51,4 +51,4 @@ jobs:
         pip list
 
     - name: Tests
-      run: python -m nose tests -v
+      run: python setup.py test

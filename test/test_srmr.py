@@ -3,6 +3,7 @@
 #
 # This file is part of the SRMRpy library, and is licensed under the
 # MIT license: https://github.com/jfsantos/SRMRpy/blob/master/LICENSE
+import os.path
 
 from srmrpy import srmr
 from scipy.io.matlab import loadmat
@@ -11,7 +12,7 @@ import numpy as np
 fs = 16000
 s = loadmat("test/test.mat")["s"][:,0]
 
-correct_ratios = loadmat("test/correct_ratios.mat")['correct_ratios'][0]
+correct_ratios = loadmat(os.path.join("test", "correct_ratios.mat"))['correct_ratios'][0]
 
 
 def test_srmr():

@@ -13,7 +13,7 @@ setup(
     install_requires = [
         'numpy',
         'scipy',
-        'gammatone @ git+https://github.com/detly/gammatone',
+        'Gammatone',
     ],
 
     tests_require = [

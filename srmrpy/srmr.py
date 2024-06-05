@@ -5,12 +5,14 @@
 # MIT license: https://github.com/jfsantos/SRMRpy/blob/master/LICENSE
 
 from __future__ import division
+
 import numpy as np
-from scipy.signal import hamming
+from scipy.signal.windows import hamming
 from srmrpy.hilbert import hilbert
-from srmrpy.modulation_filters import *
 from gammatone.fftweight import fft_gtgram
 from gammatone.filters import centre_freqs, make_erb_filters, erb_filterbank
+
+from srmrpy.modulation_filters import compute_modulation_cfs, modulation_filterbank, modfilt
 from srmrpy.segmentaxis import segment_axis
 
 from scipy.io.wavfile import read as readwav

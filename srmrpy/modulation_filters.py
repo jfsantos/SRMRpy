@@ -6,7 +6,8 @@
 
 from __future__ import division
 import numpy as np
-import scipy.signal as sig
+from scipy.signal import lfilter
+
 
 def make_modulation_filter(w0, Q):
     W0 = np.tan(w0/2)
@@ -29,6 +30,6 @@ def compute_modulation_cfs(min_cf, max_cf, n):
 def modfilt(F, x):
     y = np.zeros((len(F), len(x)), dtype=np.float64)
     for k, f in enumerate(F):
-        y[k] = sig.lfilter(f[0], f[1], x)
+        y[k] = lfilter(f[0], f[1], x)
     return y
 
